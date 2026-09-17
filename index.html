@@ -1075,10 +1075,10 @@
             <p class="desktop-qr-hint" id="desktopQrHint">Scan with camera to open on <strong id="desktopQrStoreName">Google Play</strong></p>
           </div>
 
-          <!-- Store Buttons (Side-by-Side on Desktop, Stacked on Mobile) -->
-          <div class="download-store-buttons">
-            <!-- Google Play Store Button -->
-            <button type="button" class="btn-store-badge btn-google-play active" id="btnStoreGooglePlay" data-store="android" aria-label="Select Google Play QR code">
+          <!-- Store Tabs (Tabs to switch between Google Play and Apple App Store QR codes) -->
+          <div class="download-store-buttons" role="tablist" aria-label="Select App Store QR Code">
+            <!-- Google Play Store Tab Button -->
+            <button type="button" class="btn-store-badge btn-google-play active" id="btnStoreGooglePlay" role="tab" aria-selected="true" data-store="android" aria-label="Google Play Store QR Code" onclick="return false;">
               <span class="btn-store-icon">
                 <img src="assets/images/logo-googleplay.png" alt="Google Play logo" class="store-badge-logo" />
               </span>
@@ -1088,8 +1088,8 @@
               </div>
             </button>
 
-            <!-- Apple App Store Button -->
-            <button type="button" class="btn-store-badge btn-apple-store" id="btnStoreAppStore" data-store="ios" aria-label="Select Apple App Store QR code">
+            <!-- Apple App Store Tab Button -->
+            <button type="button" class="btn-store-badge btn-apple-store" id="btnStoreAppStore" role="tab" aria-selected="false" data-store="ios" aria-label="Apple App Store QR Code" onclick="return false;">
               <span class="btn-store-icon apple-icon-wrap">
                 <img src="assets/images/logo-appstore.png" alt="Apple App Store logo" class="store-badge-logo" />
               </span>
@@ -1238,8 +1238,8 @@
   <div class="toast-container" id="toastContainer" aria-live="polite"></div>
 
   <!-- Scripts -->
-  <script src="js/qr-modal.js"></script>
-  <script src="js/quote-modal.js"></script>
-  <script src="js/app.js"></script>
+  <script src="js/qr-modal.js?v=3"></script>
+  <script src="js/quote-modal.js?v=3"></script>
+  <script src="js/app.js?v=3"></script>
 </body>
 </html>

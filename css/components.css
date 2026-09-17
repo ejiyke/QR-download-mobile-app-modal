@@ -223,7 +223,7 @@
     flex: 1;
     height: 56px;
     border-radius: 12px;
-    border: none;
+    border: 2px solid transparent;
     outline: none;
     font-family: inherit;
     display: flex;
@@ -232,11 +232,26 @@
     gap: 12px;
     text-decoration: none;
     cursor: pointer;
-    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
     position: relative;
+    user-select: none;
+  }
+
+  .btn-store-badge:not(.active) {
+    opacity: 0.65;
+    filter: grayscale(15%);
+    transform: scale(0.98);
+  }
+
+  .btn-store-badge:not(.active):hover {
+    opacity: 0.9;
+    filter: none;
+    transform: translateY(-1px) scale(0.99);
   }
 
   .btn-store-badge.active {
+    opacity: 1;
+    filter: none;
     box-shadow: 0 0 0 3px #ffffff, 0 0 0 5.5px #68b600, 0 8px 20px rgba(104, 182, 0, 0.3);
     transform: translateY(-2px);
   }

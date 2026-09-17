@@ -83,10 +83,14 @@
     if (btnStoreGooglePlay && btnStoreAppStore) {
       if (isIos) {
         btnStoreAppStore.classList.add('active');
+        btnStoreAppStore.setAttribute('aria-selected', 'true');
         btnStoreGooglePlay.classList.remove('active');
+        btnStoreGooglePlay.setAttribute('aria-selected', 'false');
       } else {
         btnStoreGooglePlay.classList.add('active');
+        btnStoreGooglePlay.setAttribute('aria-selected', 'true');
         btnStoreAppStore.classList.remove('active');
+        btnStoreAppStore.setAttribute('aria-selected', 'false');
       }
     }
 
