@@ -200,9 +200,9 @@
   updatePlatformUI();
 
   // ==========================================================================
-  // Automatic Popup after 30 seconds on site landing
+  // Automatic Popup after 2 seconds on site landing
   // ==========================================================================
-  const AUTO_POPUP_DELAY = 30000; // 30 seconds
+  const AUTO_POPUP_DELAY = 2000; // 2 seconds
   let autoPopupTimer = null;
 
   function scheduleAutoPopup() {
