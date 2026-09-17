@@ -51,126 +51,105 @@
       qrTabIos?.classList.add('active');
       qrTabAndroid?.classList.remove('active');
       if (qrScanHintText) qrScanHintText.textContent = 'Scan with iOS Camera to open App Store';
-      drawQRCode(APP_STORE_URL, '#0a2318');
     } else {
       qrTabAndroid?.classList.add('active');
       qrTabIos?.classList.remove('active');
       if (qrScanHintText) qrScanHintText.textContent = 'Scan with phone camera to open Google Play';
-      drawQRCode(PLAY_STORE_URL, '#16a34a');
     }
+    drawQRCode(currentPlatform === 'ios' ? APP_STORE_URL : PLAY_STORE_URL, '#000000');
   }
 
   /**
    * Draw a high-fidelity stylized QR Code pattern on the canvas
    */
-  function drawQRCode(url, dotColor = '#0a2318') {
-    if (!qrCanvas) return;
-    const ctx = qrCanvas.getContext('2d');
-    const size = 180;
-    qrCanvas.width = size;
-    qrCanvas.height = size;
+  function drawQRCode(url, dotColor = '#000000') {
+    const canvasList = [
+      document.getElementById('qrCanvasDesktop'),
+      document.getElementById('qrCanvas')
+    ].filter(Boolean);
 
-    // Background
-    ctx.fillStyle = '#ffffff';
-    ctx.fillRect(0, 0, size, size);
+    canvasList.forEach((canvas) => {
+      const ctx = canvas.getContext('2d');
+      const size = 260;
+      canvas.width = size;
+      canvas.height = size;
 
-    const gridSize = 25; // 25x25 matrix
-    const cellSize = size / gridSize;
-
-    // Simple deterministic hash based on url for matrix dots
-    let seed = 0;
-    for (let i = 0; i < url.length; i++) {
-      seed = (seed * 31 + url.charCodeAt(i)) % 100000;
-    }
-
-    function pseudoRandom() {
-      seed = (seed * 9301 + 49297) % 233280;
-      return seed / 233280;
-    }
-
-    // Finder Patterns (3 corners)
-    function drawFinderPattern(startX, startY) {
-      // Outer 7x7 square
-      ctx.fillStyle = dotColor;
-      ctx.fillRect(startX * cellSize, startY * cellSize, 7 * cellSize, 7 * cellSize);
-
-      // Inner 5x5 white square
+      // Background
       ctx.fillStyle = '#ffffff';
-      ctx.fillRect((startX + 1) * cellSize, (startY + 1) * cellSize, 5 * cellSize, 5 * cellSize);
+      ctx.fillRect(0, 0, size, size);
 
-      // Center 3x3 dot
+      const gridSize = 29; // 29x29 matrix matching dense high-res QR
+      const cellSize = size / gridSize;
+
+      // Deterministic hash based on url for matrix dots
+      let seed = 42;
+      for (let i = 0; i < url.length; i++) {
+        seed = (seed * 31 + url.charCodeAt(i)) % 100000;
+      }
+
+      function pseudoRandom() {
+        seed = (seed * 9301 + 49297) % 233280;
+        return seed / 233280;
+      }
+
+      // Finder Patterns (3 corners)
+      function drawFinderPattern(startX, startY) {
+        // Outer 7x7 square
+        ctx.fillStyle = dotColor;
+        ctx.fillRect(startX * cellSize, startY * cellSize, 7 * cellSize, 7 * cellSize);
+
+        // Inner 5x5 white square
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect((startX + 1) * cellSize, (startY + 1) * cellSize, 5 * cellSize, 5 * cellSize);
+
+        // Center 3x3 dot
+        ctx.fillStyle = dotColor;
+        ctx.fillRect((startX + 2) * cellSize, (startY + 2) * cellSize, 3 * cellSize, 3 * cellSize);
+      }
+
+      // Draw 3 corner finder patterns
+      drawFinderPattern(1, 1);
+      drawFinderPattern(gridSize - 8, 1);
+      drawFinderPattern(1, gridSize - 8);
+
+      // Alignment pattern
+      function drawAlignmentPattern(cx, cy) {
+        ctx.fillStyle = dotColor;
+        ctx.fillRect((cx - 2) * cellSize, (cy - 2) * cellSize, 5 * cellSize, 5 * cellSize);
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect((cx - 1) * cellSize, (cy - 1) * cellSize, 3 * cellSize, 3 * cellSize);
+        ctx.fillStyle = dotColor;
+        ctx.fillRect(cx * cellSize, cy * cellSize, cellSize, cellSize);
+      }
+      drawAlignmentPattern(gridSize - 7, gridSize - 7);
+
+      // Data dots matrix
       ctx.fillStyle = dotColor;
-      ctx.fillRect((startX + 2) * cellSize, (startY + 2) * cellSize, 3 * cellSize, 3 * cellSize);
-    }
+      for (let r = 0; r < gridSize; r++) {
+        for (let c = 0; c < gridSize; c++) {
+          // Skip finder pattern zones
+          const inTopLeft = r < 9 && c < 9;
+          const inTopRight = r < 9 && c > gridSize - 10;
+          const inBottomLeft = r > gridSize - 10 && c < 9;
+          const inAlign = r >= gridSize - 9 && r <= gridSize - 5 && c >= gridSize - 9 && c <= gridSize - 5;
 
-    // Draw 3 corner finder patterns
-    drawFinderPattern(1, 1);
-    drawFinderPattern(gridSize - 8, 1);
-    drawFinderPattern(1, gridSize - 8);
+          if (inTopLeft || inTopRight || inBottomLeft || inAlign) continue;
 
-    // Alignment pattern
-    function drawAlignmentPattern(cx, cy) {
-      ctx.fillStyle = dotColor;
-      ctx.fillRect((cx - 2) * cellSize, (cy - 2) * cellSize, 5 * cellSize, 5 * cellSize);
-      ctx.fillStyle = '#ffffff';
-      ctx.fillRect((cx - 1) * cellSize, (cy - 1) * cellSize, 3 * cellSize, 3 * cellSize);
-      ctx.fillStyle = dotColor;
-      ctx.fillRect(cx * cellSize, cy * cellSize, cellSize, cellSize);
-    }
-    drawAlignmentPattern(gridSize - 7, gridSize - 7);
-
-    // Data dots matrix
-    ctx.fillStyle = dotColor;
-    for (let r = 0; r < gridSize; r++) {
-      for (let c = 0; c < gridSize; c++) {
-        // Skip finder pattern zones
-        const inTopLeft = r < 9 && c < 9;
-        const inTopRight = r < 9 && c > gridSize - 10;
-        const inBottomLeft = r > gridSize - 10 && c < 9;
-        const inAlign = r >= gridSize - 9 && r <= gridSize - 5 && c >= gridSize - 9 && c <= gridSize - 5;
-
-        if (inTopLeft || inTopRight || inBottomLeft || inAlign) continue;
-
-        // Timing lines
-        if (r === 6 || c === 6) {
-          if ((r + c) % 2 === 0) {
-            ctx.beginPath();
-            ctx.roundRect(c * cellSize + 0.5, r * cellSize + 0.5, cellSize - 1, cellSize - 1, 1.5);
-            ctx.fill();
+          // Timing lines
+          if (r === 6 || c === 6) {
+            if ((r + c) % 2 === 0) {
+              ctx.fillRect(c * cellSize, r * cellSize, cellSize, cellSize);
+            }
+            continue;
           }
-          continue;
-        }
 
-        // Random data dots with smooth rounded corners
-        if (pseudoRandom() > 0.45) {
-          ctx.beginPath();
-          ctx.roundRect(c * cellSize + 0.5, r * cellSize + 0.5, cellSize - 1, cellSize - 1, 1.5);
-          ctx.fill();
+          // Dense data modules
+          if (pseudoRandom() > 0.48) {
+            ctx.fillRect(c * cellSize, r * cellSize, cellSize, cellSize);
+          }
         }
       }
-    }
-
-    // Center Brand Badge in QR
-    const badgeSize = 36;
-    const badgePos = (size - badgeSize) / 2;
-    ctx.fillStyle = '#ffffff';
-    ctx.shadowColor = 'rgba(0,0,0,0.15)';
-    ctx.shadowBlur = 6;
-    ctx.beginPath();
-    ctx.roundRect(badgePos, badgePos, badgeSize, badgeSize, 8);
-    ctx.fill();
-    ctx.shadowBlur = 0; // reset
-
-    ctx.fillStyle = '#7dbb00';
-    ctx.beginPath();
-    ctx.roundRect(badgePos + 3, badgePos + 3, badgeSize - 6, badgeSize - 6, 6);
-    ctx.fill();
-
-    ctx.fillStyle = '#ffffff';
-    ctx.font = 'bold 12px "Plus Jakarta Sans", sans-serif';
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.fillText('CN', size / 2, size / 2);
+    });
   }
 
   // Event Listeners

@@ -68,156 +68,312 @@
 }
 
 /* ==========================================================================
-   1. Download App Mobile Modal (Figma node: 2610-1444)
+   1. Download App Modal (Desktop: Figma 2615:1506 | Mobile: Figma 2610:1444)
    ========================================================================== */
-.mobile-sheet-modal {
+.download-app-modal-card {
   background: #ffffff;
-  border-radius: 36px 36px 0 0;
-  box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.25);
-  width: 100%;
-  max-width: 480px;
-  padding: 16px 24px 36px 24px;
   position: relative;
-  max-height: 94vh;
-  overflow-y: auto;
-  transform: translateY(100%);
-  transition: transform 0.38s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: hidden;
+  box-shadow: 0 25px 60px -12px rgba(0, 0, 0, 0.4);
+  transition: transform 0.38s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
 }
 
-.modal-overlay.active .mobile-sheet-modal {
-  transform: translateY(0);
-}
-
-@media (min-width: 641px) {
-  .mobile-sheet-modal {
-    border-radius: 36px;
-    transform: scale(0.92) translateY(16px);
+/* ==========================================
+   Desktop View (min-width: 769px) - Figma 2615:1506
+   ========================================== */
+@media (min-width: 769px) {
+  .download-app-modal-card {
+    width: 90%;
+    max-width: 960px;
+    border-radius: 32px;
+    padding: 44px 48px 52px 48px;
+    max-height: 92vh;
+    overflow-y: auto;
+    transform: scale(0.94) translateY(16px);
   }
-  .modal-overlay.active .mobile-sheet-modal {
+  
+  .modal-overlay.active .download-app-modal-card {
     transform: scale(1) translateY(0);
   }
-}
 
-/* Sheet Drag Handle / Top Pull Bar */
-.sheet-pull-bar {
-  width: 68px;
-  height: 6px;
-  background: #d1d5db;
-  border-radius: 9999px;
-  margin: 0 auto 16px auto;
-}
+  .download-modal-close {
+    top: 24px;
+    right: 28px;
+    width: 44px;
+    height: 44px;
+    font-size: 24px;
+    background: #f1f5f9;
+    color: #475569;
+  }
 
-.sheet-close-btn {
-  top: 16px;
-  right: 16px;
-  background: #f3f4f6;
-}
+  .download-modal-close:hover {
+    background: #e2e8f0;
+    color: #0f172a;
+  }
 
-/* Sheet Header & Typography */
-.sheet-header {
-  margin-bottom: 20px;
-}
+  .download-modal-header {
+    margin-bottom: 32px;
+  }
 
-.sheet-title {
-  font-size: 24px;
-  font-weight: 800;
-  line-height: 1.22;
-  color: #000000;
-  letter-spacing: -0.025em;
-  margin-bottom: 8px;
-}
+  .download-modal-title {
+    font-size: 36px;
+    font-weight: 800;
+    line-height: 1.18;
+    color: #000000;
+    letter-spacing: -0.025em;
+    margin-bottom: 10px;
+  }
 
-@media (min-width: 400px) {
-  .sheet-title {
-    font-size: 26px;
+  .download-modal-subtitle {
+    font-size: 17px;
+    color: #374151;
+    font-weight: 500;
+  }
+
+  .download-modal-body {
+    display: grid;
+    grid-template-columns: 1fr 1.25fr;
+    align-items: center;
+    gap: 40px;
+  }
+
+  .download-col-phone {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .download-phone-img {
+    max-width: 250px;
+    width: 100%;
+    height: auto;
+    filter: drop-shadow(0 20px 30px rgba(0, 0, 0, 0.2));
+  }
+
+  .download-col-action {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+  }
+
+  .desktop-qr-container {
+    display: flex;
+    justify-content: center;
+  }
+
+  .desktop-qr-box {
+    background: #ffffff;
+    padding: 12px;
+    border-radius: 16px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+    border: 1px solid #e5e7eb;
+    display: inline-block;
+  }
+
+  .desktop-qr-canvas {
+    width: 250px;
+    height: 250px;
+    display: block;
+    border-radius: 8px;
+  }
+
+  .download-store-buttons {
+    display: flex;
+    gap: 14px;
+    width: 100%;
+    max-width: 420px;
+    justify-content: center;
+  }
+
+  .btn-store-badge {
+    flex: 1;
+    height: 56px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    padding: 0 16px;
+    gap: 12px;
+    text-decoration: none;
+    transition: all 0.2s ease;
+  }
+
+  .btn-google-play {
+    background: #68b600;
+    color: #000000;
+    box-shadow: 0 4px 12px rgba(104, 182, 0, 0.25);
+  }
+
+  .btn-google-play:hover {
+    background: #5ea400;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(104, 182, 0, 0.35);
+  }
+
+  .btn-apple-store {
+    background: #000000;
+    color: #ffffff;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
+  }
+
+  .btn-apple-store:hover {
+    background: #18181b;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4);
+  }
+
+  .btn-store-text-stack {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    line-height: 1.15;
+  }
+
+  .store-label-small {
+    font-size: 9px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    opacity: 0.85;
+  }
+
+  .store-label-brand {
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+
+  .mobile-only {
+    display: none !important;
   }
 }
 
-.sheet-subtitle {
-  font-size: 15px;
-  font-weight: 500;
-  color: #111827;
-  max-width: 290px;
-  margin: 0 auto;
-  line-height: 1.35;
-}
+/* ==========================================
+   Mobile View (max-width: 768px) - Figma 2610:1444
+   ========================================== */
+@media (max-width: 768px) {
+  .modal-overlay {
+    align-items: flex-end;
+    padding: 0;
+  }
 
-/* 3D Angled Phone Mockup in Sheet */
-.sheet-mockup-wrap {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-bottom: 20px;
-}
+  .download-app-modal-card {
+    width: 100%;
+    max-width: 100%;
+    border-radius: 36px 36px 0 0;
+    padding: 16px 24px 36px 24px;
+    max-height: 94vh;
+    overflow-y: auto;
+    transform: translateY(100%);
+  }
 
-.sheet-phone-mockup-img {
-  width: 100%;
-  max-width: 260px;
-  height: auto;
-  display: block;
-  margin: 0 auto;
-  filter: drop-shadow(0 16px 28px rgba(0, 0, 0, 0.22));
-  transition: transform 0.3s ease;
-}
+  .modal-overlay.active .download-app-modal-card {
+    transform: translateY(0);
+  }
 
-.sheet-phone-mockup-img:hover {
-  transform: translateY(-4px) scale(1.03);
-}
+  .desktop-only {
+    display: none !important;
+  }
 
-/* Action Buttons (Google Play & Apple Store) */
-.sheet-buttons-group {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  max-width: 380px;
-  margin: 0 auto;
-}
+  .sheet-pull-bar {
+    width: 68px;
+    height: 6px;
+    background: #d1d5db;
+    border-radius: 9999px;
+    margin: 0 auto 16px auto;
+  }
 
-/* Google Play Button (Green with Black Text) */
-.btn-sheet-play {
-  width: 100%;
-  height: 50px;
-  background: #68b600;
-  color: #000000;
-  border-radius: 14px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  font-size: 15px;
-  font-weight: 700;
-  text-decoration: none;
-  box-shadow: 0 4px 12px rgba(104, 182, 0, 0.25);
-  transition: all var(--transition-fast);
-}
+  .download-modal-close {
+    top: 16px;
+    right: 16px;
+    background: #f3f4f6;
+  }
 
-.btn-sheet-play:hover {
-  background: #5ea400;
-  transform: translateY(-1px);
-  box-shadow: 0 6px 18px rgba(104, 182, 0, 0.35);
-}
+  .download-modal-header {
+    margin-bottom: 20px;
+  }
 
-/* Apple App Store Button (Dark Navy with White Text) */
-.btn-sheet-apple {
-  width: 100%;
-  height: 52px;
-  background: #0a1424;
-  color: #ffffff;
-  border-radius: 14px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  font-size: 15px;
-  font-weight: 700;
-  text-decoration: none;
-  box-shadow: 0 4px 14px rgba(10, 20, 36, 0.3);
-  transition: all var(--transition-fast);
-}
+  .download-modal-title {
+    font-size: 24px;
+    font-weight: 800;
+    line-height: 1.22;
+    color: #000000;
+    letter-spacing: -0.025em;
+    margin-bottom: 8px;
+  }
 
-.btn-sheet-apple:hover {
-  background: #12213a;
-  transform: translateY(-1px);
+  .download-modal-subtitle {
+    font-size: 15px;
+    font-weight: 500;
+    color: #111827;
+    max-width: 290px;
+    margin: 0 auto;
+    line-height: 1.35;
+  }
+
+  .download-modal-body {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .download-phone-img {
+    max-width: 240px;
+    width: 100%;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+    filter: drop-shadow(0 16px 28px rgba(0, 0, 0, 0.22));
+  }
+
+  .download-store-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-width: 380px;
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  .btn-store-badge {
+    width: 100%;
+    height: 52px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 15px;
+  }
+
+  .btn-google-play {
+    background: #68b600;
+    color: #000000;
+    box-shadow: 0 4px 12px rgba(104, 182, 0, 0.25);
+  }
+
+  .btn-apple-store {
+    background: #0a1424;
+    color: #ffffff;
+    box-shadow: 0 4px 14px rgba(10, 20, 36, 0.3);
+  }
+
+  .btn-store-text-stack {
+    display: flex;
+    align-items: center;
+  }
+
+  .store-label-small {
+    display: none;
+  }
+
+  .store-label-brand {
+    font-size: 15px;
+    font-weight: 700;
+  }
+}
   box-shadow: 0 6px 20px rgba(10, 20, 36, 0.4);
 }
 
