@@ -1069,16 +1069,16 @@
           
           <!-- Large Desktop QR Code -->
           <div class="desktop-qr-container desktop-only">
-            <a href="https://play.google.com/store/apps/details?id=com.cnquoterequest" target="_blank" rel="noopener" class="desktop-qr-box" id="desktopQrBox" title="Click to open store link">
+            <div class="desktop-qr-box" id="desktopQrBox">
               <img id="qrImageDesktop" src="assets/images/qr-googleplay.png" alt="Scan QR Code to download Quote Request Mobile App" class="desktop-qr-img" />
-            </a>
-            <p class="desktop-qr-hint" id="desktopQrHint">Scan with camera or click below for <strong id="desktopQrStoreName">Google Play</strong></p>
+            </div>
+            <p class="desktop-qr-hint" id="desktopQrHint">Scan with camera to open on <strong id="desktopQrStoreName">Google Play</strong></p>
           </div>
 
           <!-- Store Buttons (Side-by-Side on Desktop, Stacked on Mobile) -->
           <div class="download-store-buttons">
             <!-- Google Play Store Button -->
-            <a href="https://play.google.com/store/apps/details?id=com.cnquoterequest" target="_blank" rel="noopener" class="btn-store-badge btn-google-play active" id="btnStoreGooglePlay" data-store="android" aria-label="Get it on Google Play Store">
+            <button type="button" class="btn-store-badge btn-google-play active" id="btnStoreGooglePlay" data-store="android" aria-label="Select Google Play QR code">
               <span class="btn-store-icon">
                 <img src="assets/images/logo-googleplay.png" alt="Google Play logo" class="store-badge-logo" />
               </span>
@@ -1086,10 +1086,10 @@
                 <span class="store-label-small">GET IT ON</span>
                 <span class="store-label-brand">Google Play</span>
               </div>
-            </a>
+            </button>
 
             <!-- Apple App Store Button -->
-            <a href="https://apps.apple.com/us/app/quote-request-cn/id6759622404" target="_blank" rel="noopener" class="btn-store-badge btn-apple-store" id="btnStoreAppStore" data-store="ios" aria-label="Download on Apple App Store">
+            <button type="button" class="btn-store-badge btn-apple-store" id="btnStoreAppStore" data-store="ios" aria-label="Select Apple App Store QR code">
               <span class="btn-store-icon apple-icon-wrap">
                 <img src="assets/images/logo-appstore.png" alt="Apple App Store logo" class="store-badge-logo" />
               </span>
@@ -1097,7 +1097,7 @@
                 <span class="store-label-small">Download on the</span>
                 <span class="store-label-brand">App Store</span>
               </div>
-            </a>
+            </button>
           </div>
 
         </div>

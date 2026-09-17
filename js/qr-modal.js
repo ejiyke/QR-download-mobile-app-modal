@@ -74,12 +74,6 @@
       }, 100);
     }
 
-    // Update Desktop QR link
-    if (desktopQrBox) {
-      desktopQrBox.href = activeUrl;
-      desktopQrBox.title = `Click to open ${storeLabel} page`;
-    }
-
     // Update Desktop hint label
     if (desktopQrStoreName) {
       desktopQrStoreName.textContent = storeLabel;
@@ -188,12 +182,20 @@
     });
   }
 
-  // Event Listeners for Desktop Modal Buttons
+  // Event Listeners for Desktop Modal Buttons (Toggle QR code without routing)
   btnStoreGooglePlay?.addEventListener('mouseenter', () => switchPlatform('android'));
-  btnStoreGooglePlay?.addEventListener('click', () => switchPlatform('android'));
+  btnStoreGooglePlay?.addEventListener('click', (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    switchPlatform('android');
+  });
 
   btnStoreAppStore?.addEventListener('mouseenter', () => switchPlatform('ios'));
-  btnStoreAppStore?.addEventListener('click', () => switchPlatform('ios'));
+  btnStoreAppStore?.addEventListener('click', (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    switchPlatform('ios');
+  });
 
   // Close buttons
   if (qrModalClose) {
