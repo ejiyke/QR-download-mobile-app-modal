@@ -266,6 +266,20 @@
     box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4);
   }
 
+  .btn-store-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .store-badge-logo {
+    width: 26px;
+    height: 26px;
+    object-fit: contain;
+    display: block;
+  }
+
   .btn-store-text-stack {
     display: flex;
     flex-direction: column;
@@ -407,6 +421,12 @@
   .btn-store-text-stack {
     display: flex;
     align-items: center;
+  }
+
+  .store-badge-logo {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
   }
 
   .store-label-small {
