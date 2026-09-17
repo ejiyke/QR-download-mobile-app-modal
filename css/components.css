@@ -1,0 +1,855 @@
+/* ==========================================================================
+   ConnectNigeria Quote Request - Components & Modals
+   Includes: QR Download Modal, Quote Request Modal, Video Player, Drawer, Toasts
+   ========================================================================== */
+
+/* ==========================================================================
+   Modal Backdrop & Base
+   ========================================================================== */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.7);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.modal-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.modal-box {
+  background: #ffffff;
+  border-radius: var(--radius-2xl);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.3);
+  width: 100%;
+  max-width: 540px;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+  transform: scale(0.92) translateY(12px);
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.modal-overlay.active .modal-box {
+  transform: scale(1) translateY(0);
+}
+
+.modal-close-btn {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #f1f5f9;
+  color: #64748b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  transition: all var(--transition-fast);
+  z-index: 10;
+}
+
+.modal-close-btn:hover {
+  background: #e2e8f0;
+  color: #0f172a;
+  transform: rotate(90deg);
+}
+
+/* ==========================================================================
+   1. Download App Mobile Modal (Figma node: 2610-1444)
+   ========================================================================== */
+.mobile-sheet-modal {
+  background: #ffffff;
+  border-radius: 36px 36px 0 0;
+  box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.25);
+  width: 100%;
+  max-width: 480px;
+  padding: 16px 24px 36px 24px;
+  position: relative;
+  max-height: 94vh;
+  overflow-y: auto;
+  transform: translateY(100%);
+  transition: transform 0.38s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.modal-overlay.active .mobile-sheet-modal {
+  transform: translateY(0);
+}
+
+@media (min-width: 641px) {
+  .mobile-sheet-modal {
+    border-radius: 36px;
+    transform: scale(0.92) translateY(16px);
+  }
+  .modal-overlay.active .mobile-sheet-modal {
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* Sheet Drag Handle / Top Pull Bar */
+.sheet-pull-bar {
+  width: 68px;
+  height: 6px;
+  background: #d1d5db;
+  border-radius: 9999px;
+  margin: 0 auto 16px auto;
+}
+
+.sheet-close-btn {
+  top: 16px;
+  right: 16px;
+  background: #f3f4f6;
+}
+
+/* Sheet Header & Typography */
+.sheet-header {
+  margin-bottom: 20px;
+}
+
+.sheet-title {
+  font-size: 24px;
+  font-weight: 800;
+  line-height: 1.22;
+  color: #000000;
+  letter-spacing: -0.025em;
+  margin-bottom: 8px;
+}
+
+@media (min-width: 400px) {
+  .sheet-title {
+    font-size: 26px;
+  }
+}
+
+.sheet-subtitle {
+  font-size: 15px;
+  font-weight: 500;
+  color: #111827;
+  max-width: 290px;
+  margin: 0 auto;
+  line-height: 1.35;
+}
+
+/* 3D Angled Phone Mockup in Sheet */
+.sheet-mockup-wrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 24px;
+  perspective: 900px;
+}
+
+.sheet-phone-3d {
+  width: 154px;
+  height: 236px;
+  background: #0f172a;
+  border-radius: 26px;
+  border: 4px solid #cbd5e1;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.22), 0 0 0 1px rgba(255, 255, 255, 0.5);
+  transform: rotateX(14deg) rotateY(-12deg) rotateZ(5deg);
+  transition: transform 0.35s ease;
+  overflow: hidden;
+  position: relative;
+}
+
+.sheet-phone-3d:hover {
+  transform: rotateX(6deg) rotateY(-4deg) rotateZ(1deg) scale(1.03);
+}
+
+.sheet-phone-inner {
+  width: 100%;
+  height: 100%;
+  background: #f8fafc;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.sheet-phone-island {
+  position: absolute;
+  top: 5px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 52px;
+  height: 12px;
+  background: #000000;
+  border-radius: 8px;
+  z-index: 10;
+}
+
+.sheet-phone-app-screen {
+  padding: 22px 8px 8px 8px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.sheet-app-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+
+.sheet-app-brand {
+  font-size: 8px;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.sheet-app-badge {
+  font-size: 7px;
+  font-weight: 700;
+  background: #dcfce7;
+  color: #15803d;
+  padding: 1px 4px;
+  border-radius: 3px;
+}
+
+.sheet-app-search {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 3px 6px;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 7px;
+  color: #94a3b8;
+  margin-bottom: 6px;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.sheet-app-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 4px;
+  margin-bottom: 6px;
+}
+
+.sheet-mini-card {
+  background: #ffffff;
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+}
+
+.sheet-mini-card img {
+  width: 100%;
+  height: 24px;
+  object-fit: cover;
+}
+
+.sheet-mini-card span {
+  font-size: 6px;
+  font-weight: 700;
+  color: #1e293b;
+  text-align: center;
+  padding: 1px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sheet-app-nav {
+  display: flex;
+  justify-content: space-around;
+  padding-top: 4px;
+  border-top: 1px solid #e2e8f0;
+  font-size: 8px;
+}
+
+.sheet-nav-active {
+  color: var(--primary);
+}
+
+/* Action Buttons (Google Play & Apple Store) */
+.sheet-buttons-group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 380px;
+  margin: 0 auto;
+}
+
+/* Google Play Button (Green with Black Text) */
+.btn-sheet-play {
+  width: 100%;
+  height: 50px;
+  background: #68b600;
+  color: #000000;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  font-size: 15px;
+  font-weight: 700;
+  text-decoration: none;
+  box-shadow: 0 4px 12px rgba(104, 182, 0, 0.25);
+  transition: all var(--transition-fast);
+}
+
+.btn-sheet-play:hover {
+  background: #5ea400;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(104, 182, 0, 0.35);
+}
+
+/* Apple App Store Button (Dark Navy with White Text) */
+.btn-sheet-apple {
+  width: 100%;
+  height: 52px;
+  background: #0a1424;
+  color: #ffffff;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  font-size: 15px;
+  font-weight: 700;
+  text-decoration: none;
+  box-shadow: 0 4px 14px rgba(10, 20, 36, 0.3);
+  transition: all var(--transition-fast);
+}
+
+.btn-sheet-apple:hover {
+  background: #12213a;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(10, 20, 36, 0.4);
+}
+
+.btn-sheet-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.apple-icon-wrap {
+  width: 28px;
+  height: 28px;
+  background: #007aff;
+  border-radius: 6px;
+  color: #ffffff;
+}
+
+.btn-sheet-text {
+  letter-spacing: -0.01em;
+}
+
+.btn-store-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: var(--radius-full);
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  font-size: 12px;
+  font-weight: 600;
+  color: #1e293b;
+  transition: all var(--transition-fast);
+}
+
+.btn-store-pill:hover {
+  border-color: #0f172a;
+  background: #0f172a;
+  color: #ffffff;
+}
+
+/* ==========================================================================
+   2. Request a Quote Wizard Modal
+   ========================================================================== */
+.quote-modal-box {
+  max-width: 620px;
+}
+
+.quote-modal-header {
+  padding: 28px 28px 16px 28px;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.quote-modal-steps-nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.step-indicator {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #94a3b8;
+}
+
+.step-indicator.active {
+  color: var(--primary);
+}
+
+.step-indicator.done {
+  color: #15803d;
+}
+
+.step-dot {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #e2e8f0;
+  color: #64748b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+}
+
+.step-indicator.active .step-dot {
+  background: var(--primary);
+  color: #ffffff;
+}
+
+.step-indicator.done .step-dot {
+  background: #15803d;
+  color: #ffffff;
+}
+
+.step-line {
+  width: 32px;
+  height: 2px;
+  background: #e2e8f0;
+}
+
+.step-line.done {
+  background: #15803d;
+}
+
+.quote-modal-body {
+  padding: 28px;
+}
+
+.wizard-step-pane {
+  display: none;
+}
+
+.wizard-step-pane.active {
+  display: block;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-label {
+  display: block;
+  font-size: 14px;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 8px;
+}
+
+.form-control {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  font-size: 14px;
+  color: #0f172a;
+  background: #ffffff;
+  outline: none;
+  transition: border-color var(--transition-fast);
+}
+
+.form-control:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(125, 187, 0, 0.15);
+}
+
+textarea.form-control {
+  resize: vertical;
+  min-height: 90px;
+}
+
+.category-select-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  max-height: 220px;
+  overflow-y: auto;
+  padding: 2px;
+}
+
+@media (min-width: 500px) {
+  .category-select-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.category-option-btn {
+  padding: 10px;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  text-align: center;
+  font-size: 12px;
+  font-weight: 600;
+  color: #334155;
+  background: #ffffff;
+  transition: all var(--transition-fast);
+}
+
+.category-option-btn:hover {
+  border-color: var(--primary);
+  background: var(--primary-light);
+}
+
+.category-option-btn.selected {
+  border-color: var(--primary);
+  background: #f0fdf4;
+  color: #15803d;
+  font-weight: 700;
+  box-shadow: 0 0 0 2px var(--primary);
+}
+
+.quote-modal-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 28px 24px 28px;
+  border-top: 1px solid var(--border-light);
+}
+
+.btn-secondary {
+  padding: 10px 20px;
+  border-radius: var(--radius-md);
+  border: 1px solid #cbd5e1;
+  background: #ffffff;
+  color: #475569;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.btn-primary {
+  padding: 10px 24px;
+  border-radius: var(--radius-md);
+  background: var(--primary);
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 14px;
+  box-shadow: 0 4px 12px rgba(125, 187, 0, 0.35);
+  transition: all var(--transition-fast);
+}
+
+.btn-primary:hover {
+  background: var(--primary-hover);
+  transform: translateY(-1px);
+}
+
+/* Success State in Quote Modal */
+.quote-success-state {
+  text-align: center;
+  padding: 24px 0;
+}
+
+.success-icon-badge {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: #dcfce7;
+  color: #16a34a;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+  margin-bottom: 20px;
+}
+
+/* ==========================================================================
+   3. Video Player Modal
+   ========================================================================== */
+.video-modal-box {
+  max-width: 780px;
+  background: #000000;
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+}
+
+.video-modal-box .modal-close-btn {
+  background: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+}
+
+.video-player-container {
+  position: relative;
+  padding-bottom: 56.25%; /* 16:9 aspect ratio */
+  height: 0;
+  overflow: hidden;
+  background: #000000;
+}
+
+.video-sim-screen {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(circle, #1a3a2a 0%, #08140e 100%);
+  color: #ffffff;
+  padding: 30px;
+  text-align: center;
+}
+
+.sim-play-pulse {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: var(--primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  color: #ffffff;
+  margin-bottom: 20px;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { box-shadow: 0 0 0 0 rgba(125, 187, 0, 0.7); }
+  70% { box-shadow: 0 0 0 20px rgba(125, 187, 0, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(125, 187, 0, 0); }
+}
+
+/* ==========================================================================
+   4. Mobile Navigation Drawer
+   ========================================================================== */
+.mobile-drawer-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(4px);
+  z-index: 90;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+}
+
+.mobile-drawer-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.mobile-drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 280px;
+  background: #ffffff;
+  z-index: 95;
+  box-shadow: -10px 0 30px rgba(0, 0, 0, 0.15);
+  transform: translateX(100%);
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  flex-direction: column;
+  padding: 24px 20px;
+}
+
+.mobile-drawer-overlay.active .mobile-drawer {
+  transform: translateX(0);
+}
+
+.drawer-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 28px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.drawer-nav-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.drawer-nav-link {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1e293b;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 12px;
+  border-radius: var(--radius-md);
+  transition: background var(--transition-fast);
+}
+
+.drawer-nav-link:hover {
+  background: #f1f5f9;
+  color: var(--primary);
+}
+
+.drawer-footer {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* ==========================================================================
+   5. Interactive Phone UI (Inside Frame)
+   ========================================================================== */
+.phone-ui-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #e2e8f0;
+  margin-bottom: 12px;
+}
+
+.phone-app-logo {
+  font-size: 13px;
+  font-weight: 800;
+  color: #0f172a;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.phone-badge-live {
+  background: #dcfce7;
+  color: #15803d;
+  font-size: 9px;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.phone-search-bar {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 20px;
+  padding: 6px 12px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 10px;
+  color: #64748b;
+  margin-bottom: 12px;
+}
+
+.phone-categories-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 6px;
+  margin-bottom: 12px;
+}
+
+.phone-cat-card {
+  background: #ffffff;
+  border-radius: 8px;
+  padding: 6px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.phone-cat-thumb {
+  width: 100%;
+  height: 52px;
+  border-radius: 6px;
+  object-fit: cover;
+}
+
+.phone-cat-title {
+  font-size: 9px;
+  font-weight: 700;
+  color: #1e293b;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.phone-recent-quote-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+}
+
+.phone-quote-title {
+  font-size: 10px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.phone-quote-price {
+  font-size: 11px;
+  font-weight: 800;
+  color: #15803d;
+}
+
+/* ==========================================================================
+   6. Toast Notifications
+   ========================================================================== */
+.toast-container {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 200;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.toast-message {
+  background: #0f172a;
+  color: #ffffff;
+  padding: 12px 20px;
+  border-radius: var(--radius-md);
+  font-size: 13px;
+  font-weight: 600;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transform: translateY(20px);
+  opacity: 0;
+  animation: toastIn 0.3s forwards ease;
+}
+
+@keyframes toastIn {
+  to { transform: translateY(0); opacity: 1; }
+}
