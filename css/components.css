@@ -161,23 +161,54 @@
 
   .desktop-qr-container {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
   }
 
   .desktop-qr-box {
     background: #ffffff;
-    padding: 10px;
-    border-radius: 16px;
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
-    border: 1px solid #e5e7eb;
-    display: inline-block;
+    padding: 12px;
+    border-radius: 18px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    border: 1.5px solid #e5e7eb;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    cursor: pointer;
+    transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
   }
 
+  .desktop-qr-box:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 14px 30px rgba(0, 0, 0, 0.12);
+    border-color: #68b600;
+  }
+
+  .desktop-qr-img,
   .desktop-qr-canvas {
-    width: 210px;
-    height: 210px;
+    width: 200px;
+    height: 200px;
     display: block;
     border-radius: 8px;
+    object-fit: contain;
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+  }
+
+  .desktop-qr-hint {
+    font-size: 13px;
+    color: #64748b;
+    font-weight: 500;
+    text-align: center;
+    margin: 0;
+  }
+
+  .desktop-qr-hint strong {
+    color: #0f172a;
+    font-weight: 700;
   }
 
   .download-store-buttons {
@@ -197,7 +228,18 @@
     padding: 0 16px;
     gap: 12px;
     text-decoration: none;
-    transition: all 0.2s ease;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    position: relative;
+  }
+
+  .btn-store-badge.active {
+    box-shadow: 0 0 0 3px #ffffff, 0 0 0 5.5px #68b600, 0 8px 20px rgba(104, 182, 0, 0.3);
+    transform: translateY(-2px);
+  }
+
+  .btn-apple-store.active {
+    box-shadow: 0 0 0 3px #ffffff, 0 0 0 5.5px #000000, 0 8px 20px rgba(0, 0, 0, 0.35);
   }
 
   .btn-google-play {
