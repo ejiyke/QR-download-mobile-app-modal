@@ -48,6 +48,10 @@
     if (qrModalOverlay) {
       qrModalOverlay.classList.remove('active');
       document.body.style.overflow = '';
+      const mobileSheet = document.getElementById('mobileSheetModal');
+      if (mobileSheet) {
+        mobileSheet.style.transform = '';
+      }
     }
   };
 
@@ -186,20 +190,75 @@
     });
   }
 
-  // Event Listeners for Desktop Modal Buttons (Toggle QR code without routing)
-  btnStoreGooglePlay?.addEventListener('mouseenter', () => switchPlatform('android'));
+  // Event Listeners for Store Buttons:
+  // On desktop: toggles QR code between Android and iOS without routing
+  // On mobile: directly opens corresponding store link
+  btnStoreGooglePlay?.addEventListener('mouseenter', () => {
+    if (window.innerWidth > 768) switchPlatform('android');
+  });
   btnStoreGooglePlay?.addEventListener('click', (e) => {
+    if (window.innerWidth <= 768) {
+      window.open(PLAY_STORE_URL, '_blank', 'noopener');
+      return;
+    }
     e.preventDefault();
     e.stopPropagation();
     switchPlatform('android');
   });
 
-  btnStoreAppStore?.addEventListener('mouseenter', () => switchPlatform('ios'));
+  btnStoreAppStore?.addEventListener('mouseenter', () => {
+    if (window.innerWidth > 768) switchPlatform('ios');
+  });
   btnStoreAppStore?.addEventListener('click', (e) => {
+    if (window.innerWidth <= 768) {
+      window.open(APP_STORE_URL, '_blank', 'noopener');
+      return;
+    }
     e.preventDefault();
     e.stopPropagation();
     switchPlatform('ios');
   });
+
+  // Mobile Touch Swipe-Down to Dismiss Bottom Sheet
+  const mobileSheet = document.getElementById('mobileSheetModal');
+  if (mobileSheet) {
+    let startY = 0;
+    let currentY = 0;
+    let isDragging = false;
+
+    mobileSheet.addEventListener('touchstart', (e) => {
+      if (mobileSheet.scrollTop > 5) return;
+      startY = e.touches[0].clientY;
+      currentY = startY;
+      isDragging = true;
+    }, { passive: true });
+
+    mobileSheet.addEventListener('touchmove', (e) => {
+      if (!isDragging) return;
+      currentY = e.touches[0].clientY;
+      const diffY = currentY - startY;
+      if (diffY > 0) {
+        mobileSheet.style.transform = `translateY(${diffY}px)`;
+      }
+    }, { passive: true });
+
+    mobileSheet.addEventListener('touchend', () => {
+      if (!isDragging) return;
+      isDragging = false;
+      const diffY = currentY - startY;
+      if (diffY > 80) {
+        window.closeQrModal();
+      } else {
+        mobileSheet.style.transition = 'transform 0.25s cubic-bezier(0.16, 1, 0.3, 1)';
+        mobileSheet.style.transform = '';
+        setTimeout(() => {
+          mobileSheet.style.transition = '';
+        }, 250);
+      }
+      startY = 0;
+      currentY = 0;
+    });
+  }
 
   // Close buttons
   if (qrModalClose) {
